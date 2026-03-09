@@ -2,6 +2,7 @@ require('dotenv').config();
 const http = require('http');
 const tratarRotaPedido = require('./routes/orderRoutes');
 const tratarRotaAuth = require('./routes/authRoutes');
+const tratarRotaSwagger = require('./routes/swaggerRoutes');
 const inicializarBanco = require('./database/init');
 
 const PORTA = process.env.PORT || 3000;
@@ -14,6 +15,11 @@ const servidor = http.createServer((req, res) => {
     if (req.method === 'OPTIONS') {
         res.writeHead(200);
         res.end();
+        return;
+    }
+
+    if (req.url.startsWith('/swagger') || req.url === '/api-docs' || req.url === '/swagger.json') {
+        tratarRotaSwagger(req, res);
         return;
     }
 
@@ -31,6 +37,7 @@ async function iniciarServidor() {
 
         servidor.listen(PORTA, () => {
             console.log(`Servidor rodando na porta ${PORTA}`);
+            console.log(`Documentação Swagger disponível em: http://localhost:${PORTA}/swagger`);
         });
     } catch (erro) {
         console.error('Erro ao iniciar servidor:', erro);

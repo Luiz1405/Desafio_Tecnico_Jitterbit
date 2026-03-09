@@ -1,10 +1,15 @@
-const { criarPedidoController, buscarPedidoController } = require('../controllers/orderController');
-const { extrairNumeroPedidoDaUrl, isRotaGetPedido, isRotaPostPedido } = require('../utils/urlParser');
+const { criarPedidoController, buscarPedidoController, listarPedidosController } = require('../controllers/orderController');
+const { extrairNumeroPedidoDaUrl, isRotaGetPedido, isRotaPostPedido, isRotaListarPedidos } = require('../utils/urlParser');
 const { enviarRespostaErro } = require('../utils/responseHandler');
 
 function tratarRotaPedido(req, res) {
     if (req.method === 'POST' && isRotaPostPedido(req.url)) {
         criarPedidoController(req, res);
+        return;
+    }
+
+    if (req.method === 'GET' && isRotaListarPedidos(req.url)) {
+        listarPedidosController(req, res);
         return;
     }
 

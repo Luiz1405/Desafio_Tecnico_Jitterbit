@@ -10,6 +10,10 @@ class OrderRepositoryInterface {
   async buscarPedidoPorNumero(numeroPedido) {
     throw new Error('Método buscarPedidoPorNumero deve ser implementado');
   }
+
+  async listarTodosPedidos() {
+    throw new Error('Método listarTodosPedidos deve ser implementado');
+  }
 }
 
 module.exports = OrderRepositoryInterface;

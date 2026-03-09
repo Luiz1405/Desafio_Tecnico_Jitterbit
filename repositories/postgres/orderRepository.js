@@ -108,6 +108,56 @@ class PostgresOrderRepository extends OrderRepositoryInterface {
             cliente.release();
         }
     }
+
+    async listarTodosPedidos() {
+        const cliente = await pool.connect();
+
+        try {
+            const queryPedidos = `
+                SELECT "orderId", value, "creationDate"
+                FROM "Order"
+                ORDER BY "creationDate" DESC
+            `;
+
+            const resultadoPedidos = await cliente.query(queryPedidos);
+
+            if (resultadoPedidos.rows.length === 0) {
+                return [];
+            }
+
+            const pedidos = await Promise.all(
+                resultadoPedidos.rows.map(async (pedido) => {
+                    const queryItems = `
+                        SELECT "productId", quantity, price
+                        FROM "Items"
+                        WHERE "orderId" = $1
+                    `;
+
+                    const resultadoItems = await cliente.query(queryItems, [pedido.orderId]);
+
+                    const items = resultadoItems.rows.map(item => ({
+                        idItem: item.productId,
+                        quantidadeItem: item.quantity,
+                        valorItem: parseFloat(item.price)
+                    }));
+
+                    return {
+                        numeroPedido: pedido.orderId,
+                        valorTotal: parseFloat(pedido.value),
+                        dataCriacao: pedido.creationDate.toISOString(),
+                        items: items
+                    };
+                })
+            );
+
+            return pedidos;
+
+        } catch (erro) {
+            throw erro;
+        } finally {
+            cliente.release();
+        }
+    }
 }
 
 module.exports = PostgresOrderRepository;

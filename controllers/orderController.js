@@ -1,4 +1,4 @@
-const { criarPedido, buscarPedidoPorNumero } = require('../services/orderService');
+const { criarPedido, buscarPedidoPorNumero, listarTodosPedidos } = require('../services/orderService');
 const { validarContentType, validarBodyVazio, validarJSON, isErroValidacao } = require('../utils/requestValidator');
 const { enviarRespostaErro, enviarRespostaSucesso, enviarRespostaDados } = require('../utils/responseHandler');
 
@@ -70,4 +70,14 @@ async function buscarPedidoController(req, res, numeroPedido) {
     }
 }
 
-module.exports = { criarPedidoController, buscarPedidoController };
+async function listarPedidosController(req, res) {
+    try {
+        const pedidos = await listarTodosPedidos();
+        enviarRespostaDados(res, pedidos);
+    } catch (erro) {
+        console.error('Erro ao listar pedidos:', erro);
+        enviarRespostaErro(res, 500, 'Erro ao listar pedidos');
+    }
+}
+
+module.exports = { criarPedidoController, buscarPedidoController, listarPedidosController };

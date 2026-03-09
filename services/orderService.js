@@ -159,4 +159,9 @@ async function buscarPedidoPorNumero(numeroPedido) {
     return pedido;
 }
 
-module.exports = { criarPedido, buscarPedidoPorNumero };
+async function listarTodosPedidos() {
+    const pedidos = await orderRepository.listarTodosPedidos();
+    return pedidos;
+}
+
+module.exports = { criarPedido, buscarPedidoPorNumero, listarTodosPedidos };

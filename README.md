@@ -1,4 +1,4 @@
-# API Desafio Técnico Jitterbit
+# Projeto pessoal - API de Gerenciamento de Produtos.
 
 API RESTful para gerenciamento de pedidos desenvolvida em Node.js e Javascript, utilizando arquitetura MVC, autenticação JWT e documentação Swagger.
 

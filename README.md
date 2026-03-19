@@ -1,4 +1,4 @@
-# Projeto pessoal - API de Gerenciamento de Produtos.
+# Projeto pessoal - API de Gerenciamento de Pedidos.
 
 API RESTful para gerenciamento de pedidos desenvolvida em Node.js e Javascript, utilizando arquitetura MVC, autenticação JWT e documentação Swagger.
 
